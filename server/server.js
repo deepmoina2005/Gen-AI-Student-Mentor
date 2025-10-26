@@ -14,9 +14,19 @@ import connectCloudinary  from "./utils/cloudinary.js";
 
 const app = express();
 
-app.use(cors({ origin: "https://gen-ai-student-mentor.vercel.app"}));
+// CORS options
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://gen-ai-student-mentor.vercel.app/"
+  ],
+  credentials: true,
+};
+
 app.use(express.json());
 app.use(express.static("public"));
+app.use(cors(corsOptions));
+
 
   await connectCloudinary();
 
