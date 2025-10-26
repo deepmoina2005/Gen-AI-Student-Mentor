@@ -25,7 +25,6 @@ mongoose.connect(process.env.MONGO_URI)
 // Routes
 app.get('/', (req, res)=> res.send('Server is Live'))
 console.log("server is deploye");
-
 app.use("/api/upload", uploadRoutes);
 app.use("/api/exam", askRoutes);
 app.use("/api/auth", userRouter);
