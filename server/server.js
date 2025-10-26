@@ -24,6 +24,8 @@ app.use(express.static("public"));
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.error("MongoDB connection error:", err));
 
+    app.get('/', (req, res)=> res.send('Server is Live'))
+
   app.use("/api/upload", uploadRoutes);
   app.use("/api/exam", askRoutes);
   app.use("/api/auth", userRouter);
