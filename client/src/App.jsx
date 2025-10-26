@@ -8,7 +8,7 @@ import LearningDashboard from "./pages/Learning";
 import ExamPage from "./pages/Exam";
 import EmailManager from "./pages/EmailManager";
 import CareerCounsellor from "./pages/CareerInsight";
-import Workspace from "./pages/workspace";
+import Workspace from "./pages/Workspace";
 import ExamTack from "./pages/ExamTack";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
