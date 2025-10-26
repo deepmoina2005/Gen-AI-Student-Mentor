@@ -13,7 +13,7 @@ import solutionRouter from "./routes/solutionReviewRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({origin:"https://gen-ai-student-mentor.vercel.app"}));
 app.use(express.json());
 app.use(express.static("public"));
 await connectCloudinary();
