@@ -10,10 +10,9 @@ import doubtrouter from "./routes/doubtRoutes.js";
 import careerRouter from "./routes/careerRoutes.js";
 import resourceRouter from "./routes/resourceRoute.js";
 import solutionRouter from "./routes/solutionReviewRoutes.js";
-import connectCloudinary from "./configs/cloudinary.js";
 
 const app = express();
-app.use(cors({origin:"https://gen-ai-student-mentor.vercel.app"}));
+app.use(cors({origin:""}));
 app.use(express.json());
 app.use(express.static("public"));
 await connectCloudinary();
@@ -23,7 +22,6 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
 // Routes
-app.get('/', (req, res)=> res.send('Server is Live'))
 app.use("/api/upload", uploadRoutes);
 app.use("/api/exam", askRoutes);
 app.use("/api/auth", userRouter);
@@ -33,4 +31,5 @@ app.use("/api/career", careerRouter);
 app.use("/api/resource", resourceRouter);
 app.use("/api/solution", solutionRouter);
 
-export default app;
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
