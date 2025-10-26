@@ -1,14 +1,14 @@
-const axios = require("axios");
-const Career = require("../models/careerModel.js");
+import axios from "axios";
+import Career from "../models/careerModel.js";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyAcktCyymXxaPnfg0JFCkDDLUTwGztZDy4';
 
-const getCareerOptions = (req, res) => {
+export const getCareerOptions = (req, res) => {
   const options = ["PCM", "PCMB", "Commerce", "Arts", "Vocational", "Computer Science"];
   res.json({ options });
 };
 
-const getCareerScope = async (req, res) => {
+export const getCareerScope = async (req, res) => {
   const { stream } = req.body;
 
   if (!stream) {
@@ -59,9 +59,4 @@ const getCareerScope = async (req, res) => {
     console.error("Ai API Error:", error.response?.data || error.message);
     res.status(500).json({ error: "Failed to fetch career info from Ai" });
   }
-};
-
-module.exports = {
-  getCareerOptions,
-  getCareerScope,
 };

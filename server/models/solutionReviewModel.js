@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const solutionSchema = new mongoose.Schema({
   userId: { type: String, required: true },       // Added userId
@@ -9,4 +9,4 @@ const solutionSchema = new mongoose.Schema({
 });
 
 const Solution = mongoose.model("Solution", solutionSchema);
-module.exports = Solution;
+export default Solution;

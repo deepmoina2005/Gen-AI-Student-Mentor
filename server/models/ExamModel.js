@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const ExamSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -16,4 +16,5 @@ const ExamSchema = new mongoose.Schema({
   submittedAt: { type: Date }, // timestamp when user submits
 });
 
-module.exports = mongoose.model("Exam", ExamSchema);
+const Exam = mongoose.model("Exam", ExamSchema);
+export default Exam;

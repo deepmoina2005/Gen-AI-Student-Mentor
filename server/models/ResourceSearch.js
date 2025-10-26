@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
 
 const ResourceSearchSchema = new mongoose.Schema({
   topic: { type: String, required: true },
@@ -8,4 +8,4 @@ const ResourceSearchSchema = new mongoose.Schema({
 
 const ResourceSearch = mongoose.model("ResourceSearch", ResourceSearchSchema);
 
-module.exports =  ResourceSearch;
+export default ResourceSearch;

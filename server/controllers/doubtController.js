@@ -1,6 +1,6 @@
-const Bot = require("../models/doubtModel.js");
-const PdfDocument = require("../models/PdfDocument.js");
-const { GroqLLM } = require("../utils/groqLLM.js");
+import Bot from "../models/doubtModel.js";
+import PdfDocument from "../models/PdfDocument.js";
+import { GroqLLM } from "../utils/groqLLM.js";
 
 /**
  * Create a new chat bot session (after user uploads a PDF and enters a topic)
@@ -140,7 +140,7 @@ const deleteBotSession = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   createBotSession,
   chatWithPDF,
   getBotChats,

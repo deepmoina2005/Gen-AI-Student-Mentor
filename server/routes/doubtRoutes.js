@@ -1,11 +1,12 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   createBotSession,
   chatWithPDF,
   getBotChats,
   getAllBotSessions,
   deleteBotSession,
-} = require("../controllers/doubtController.js")
+} from "../controllers/doubtController.js";
+
 const doubtrouter = express.Router();
 
 doubtrouter.post("/create", createBotSession);
@@ -14,4 +15,4 @@ doubtrouter.get("/:id", getBotChats);
 doubtrouter.get("/", getAllBotSessions);
 doubtrouter.delete("/:id", deleteBotSession);
 
-module.exports = doubtrouter;
+export default doubtrouter;

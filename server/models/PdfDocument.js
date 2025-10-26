@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const pdfSchema = new mongoose.Schema({
   filename: String,
@@ -9,4 +9,4 @@ const pdfSchema = new mongoose.Schema({
 
 const PdfDocument = mongoose.model("PdfDocument", pdfSchema);
 
-module.exports = PdfDocument; // ✅ FIXED — export directly, not as { PdfDocument }
+export default PdfDocument; // ✅ ES module export

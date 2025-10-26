@@ -1,6 +1,6 @@
-const PdfDocument = require("../models/PdfDocument.js");
-const Exam = require("../models/ExamModel.js");
-const { GroqLLM } = require("../utils/groqLLM.js");
+import PdfDocument from "../models/PdfDocument.js";
+import Exam from "../models/ExamModel.js";
+import { GroqLLM } from "../utils/groqLLM.js";
 
 // ----------------- Helper: parse MCQs -----------------
 function parseMCQs(aiText) {
@@ -22,11 +22,11 @@ function parseMCQs(aiText) {
   }
 
   if (current.question) mcqs.push(current);
-  return mcqs.slice(0, 10); // Limit to 10 questions
+  return mcqs.slice(0, 10);
 }
 
 // ----------------- Generate Exam -----------------
-const generateExam = async (req, res) => {
+export const generateExam = async (req, res) => {
   try {
     const { userId, title, pdfId, level } = req.body;
     if (!userId || !title || !pdfId)
@@ -67,7 +67,7 @@ const generateExam = async (req, res) => {
       title,
       level: level || "Easy",
       mcqs,
-      answers: Array(mcqs.length).fill(""), // store as array of strings
+      answers: Array(mcqs.length).fill(""),
       score: 0,
       total: mcqs.length,
       submittedAt: null,
@@ -80,13 +80,10 @@ const generateExam = async (req, res) => {
   }
 };
 
-// ----------------- Check Answers API -----------------
-// ✅ checkAnswers Controller
-const checkAnswers = async (req, res) => {
+// ----------------- Check Answers -----------------
+export const checkAnswers = async (req, res) => {
   try {
     const { examId, userAnswers } = req.body;
-
-    // 🔹 Validate request data
     if (!examId || !Array.isArray(userAnswers)) {
       return res.status(400).json({
         success: false,
@@ -94,7 +91,6 @@ const checkAnswers = async (req, res) => {
       });
     }
 
-    // 🔹 Find exam
     const exam = await Exam.findById(examId);
     if (!exam) {
       return res.status(404).json({
@@ -103,11 +99,9 @@ const checkAnswers = async (req, res) => {
       });
     }
 
-    // 🔹 Normalize answer text (trim + lowercase)
     const normalizeAnswer = (ans) =>
       ans ? ans.toString().trim().toLowerCase() : "";
 
-    // 🔹 Compare answers and build results
     const results = exam.mcqs.map((q, idx) => {
       const userAns = normalizeAnswer(userAnswers[idx]);
       const correctAns = normalizeAnswer(q.answer);
@@ -121,15 +115,12 @@ const checkAnswers = async (req, res) => {
       };
     });
 
-    // 🔹 Calculate score
     const score = results.filter((r) => r.isCorrect).length;
     const total = exam.mcqs.length;
 
-    // 🔹 Optional: Save submitted answers in DB (if needed)
     exam.answers = userAnswers;
     await exam.save();
 
-    // ✅ Send response
     res.status(200).json({
       success: true,
       message: "Answers checked successfully.",
@@ -147,7 +138,7 @@ const checkAnswers = async (req, res) => {
 };
 
 // ----------------- Get Exam by ID -----------------
-const getExamById = async (req, res) => {
+export const getExamById = async (req, res) => {
   try {
     const { examId } = req.params;
     const exam = await Exam.findById(examId);
@@ -160,7 +151,7 @@ const getExamById = async (req, res) => {
 };
 
 // ----------------- Get User Exams -----------------
-const getUserExams = async (req, res) => {
+export const getUserExams = async (req, res) => {
   try {
     const { userId } = req.params;
     if (!userId) return res.status(400).json({ success: false, message: "Missing userId" });
@@ -174,7 +165,7 @@ const getUserExams = async (req, res) => {
 };
 
 // ----------------- Delete Exam -----------------
-const deleteExam = async (req, res) => {
+export const deleteExam = async (req, res) => {
   try {
     const { examId } = req.params;
     const exam = await Exam.findByIdAndDelete(examId);
@@ -185,5 +176,3 @@ const deleteExam = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
-
-module.exports = { generateExam, getExamById, getUserExams, deleteExam, checkAnswers };

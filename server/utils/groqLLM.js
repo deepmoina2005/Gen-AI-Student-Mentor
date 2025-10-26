@@ -1,8 +1,8 @@
-const { Groq } = require("groq-sdk");
+import { Groq } from "groq-sdk";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-class GroqLLM {
+export class GroqLLM {
   async call({ input }) {
     const completion = await groq.chat.completions.create({
       messages: [{ role: "user", content: input }],
@@ -21,5 +21,3 @@ class GroqLLM {
     return "No valid text found in completion";
   }
 }
-
-module.exports = { GroqLLM };

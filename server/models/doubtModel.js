@@ -1,33 +1,28 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const BotSchema = new mongoose.Schema(
   {
-    // Linked user
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
-    // Uploaded PDF
     pdfId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "PdfDocument",
       required: true,
     },
 
-    // User-given topic (like “Physics Chapter 1”)
     topic: {
       type: String,
       required: true,
     },
 
-    // Optional short description
     description: {
       type: String,
     },
 
-    // Store chat messages between user & bot
     chats: [
       {
         sender: {
@@ -46,7 +41,6 @@ const BotSchema = new mongoose.Schema(
       },
     ],
 
-    // For storing extracted text or embeddings later
     pdfContext: {
       type: Object,
       default: {},
@@ -65,4 +59,4 @@ const BotSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Bot", BotSchema);
+export default mongoose.model("Bot", BotSchema);

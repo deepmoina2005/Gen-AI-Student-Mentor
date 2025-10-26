@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const learningContentSchema = new mongoose.Schema({
   pdfId: { type: mongoose.Schema.Types.ObjectId, ref: "PdfDocument" },
@@ -10,14 +10,16 @@ const learningContentSchema = new mongoose.Schema({
     questions: [
       {
         question: String,
-        answer: String, // direct Q&A, no MCQs
+        answer: String,
       },
     ],
     conclusion: String,
     resources: [String],
-    rawText: String, // fallback field if JSON parse fails
+    rawText: String,
   },
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("LearningContent", learningContentSchema);
+const LearningContent = mongoose.model("LearningContent", learningContentSchema);
+
+export default LearningContent;  // ✅ ES module export

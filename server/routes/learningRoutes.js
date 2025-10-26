@@ -1,13 +1,11 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   generateLearningContent,
   getAllLearningContents,
   getLearningContentById,
   deleteLearningContent,
-} = require("../controllers/learningController.js");
-
-// Import the new askQuestion controller
-const { askQuestion } = require("../controllers/learningController.js");
+  askQuestion,
+} from "../controllers/learningController.js";
 
 const learningRouter = express.Router();
 
@@ -26,4 +24,4 @@ learningRouter.get("/:id", getLearningContentById);
 // Delete learning content by ID
 learningRouter.delete("/:id", deleteLearningContent);
 
-module.exports = learningRouter;
+export default learningRouter;

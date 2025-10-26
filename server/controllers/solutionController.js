@@ -1,9 +1,9 @@
-const axios = require("axios");
-const Solution = require("../models/solutionReviewModel.js");
+import axios from "axios";
+import Solution from "../models/solutionReviewModel.js"
 
 const GEMINI_API_KEY = 'AIzaSyD1ftxaP569L8qBWaLSH7NcLgGJALHWhsM';
 
-const solutionFinder = async (req, res) => {
+export const solutionFinder = async (req, res) => {
   const { userId, message, topic } = req.body;
 
   if (!userId || !message) {
@@ -52,5 +52,3 @@ const solutionFinder = async (req, res) => {
     res.status(500).json({ error: "Failed to get response from AI" });
   }
 };
-
-module.exports = { solutionFinder };

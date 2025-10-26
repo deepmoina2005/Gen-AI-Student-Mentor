@@ -1,7 +1,7 @@
-const axios = require("axios");
-const ResourceSearch = require("../models/ResourceSearch.js");
+import axios from "axios";
+import ResourceSearch from "../models/ResourceSearch.js";
 
-const getResources = async (req, res) => {
+export const getResources = async (req, res) => {
   try {
     const { topic } = req.query;
 
@@ -44,5 +44,3 @@ const getResources = async (req, res) => {
     res.status(500).json({ error: "Something went wrong while fetching results" });
   }
 };
-
-module.exports = { getResources };

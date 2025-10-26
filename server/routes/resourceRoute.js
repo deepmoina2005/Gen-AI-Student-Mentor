@@ -1,8 +1,8 @@
-const express = require("express");
-const { getResources } = require("../controllers/resourceController.js");
+import express from "express";
+import { getResources } from "../controllers/resourceController.js";
 
 const resourceRouter = express.Router();
 
 resourceRouter.get("/get-resource", getResources);
 
-module.exports = resourceRouter;
+export default resourceRouter;

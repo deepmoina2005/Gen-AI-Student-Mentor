@@ -1,6 +1,7 @@
-const userModel = require("../models/userModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+// userController.js
+import userModel from "../models/userModel.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // Helper to generate JWT
 const generateToken = (userId) => {
@@ -8,7 +9,7 @@ const generateToken = (userId) => {
 };
 
 // REGISTER
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -44,7 +45,7 @@ const registerUser = async (req, res) => {
 };
 
 // LOGIN
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -75,7 +76,7 @@ const loginUser = async (req, res) => {
 };
 
 // GET PROFILE
-const getUserProfile = async (req, res) => {
+export const getUserProfile = async (req, res) => {
   try {
     // user is attached by middleware
     const user = req.user;
@@ -91,7 +92,7 @@ const getUserProfile = async (req, res) => {
 };
 
 // LOGOUT
-const logoutUser = async (req, res) => {
+export const logoutUser = async (req, res) => {
   try {
     // JWTs are stateless, so logout is client-side
     res.status(200).json({ success: true, message: "User logged out successfully" });
@@ -100,5 +101,3 @@ const logoutUser = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-module.exports = { registerUser, loginUser, getUserProfile, logoutUser };

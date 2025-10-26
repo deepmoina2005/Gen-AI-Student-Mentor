@@ -1,8 +1,8 @@
-const LearningContent = require("../models/LearningContentModel.js");
-const PdfDocument = require("../models/PdfDocument.js");
-const { GroqLLM } = require("../utils/groqLLM.js");
+import LearningContent from "../models/LearningContentModel.js";
+import PdfDocument from "../models/PdfDocument.js";
+import { GroqLLM } from "../utils/groqLLM.js";
 
-const generateLearningContent = async (req, res) => {
+export const generateLearningContent = async (req, res) => {
   try {
     const { pdfId, userId, topic } = req.body;
 
@@ -62,7 +62,7 @@ const generateLearningContent = async (req, res) => {
   }
 };
 
-const getAllLearningContents = async (req, res) => {
+export const getAllLearningContents = async (req, res) => {
   try {
     const contents = await LearningContent.find()
       .populate("pdfId", "filename")
@@ -75,7 +75,7 @@ const getAllLearningContents = async (req, res) => {
   }
 };
 
-const getLearningContentById = async (req, res) => {
+export const getLearningContentById = async (req, res) => {
   try {
     const { id } = req.params;
     const content = await LearningContent.findById(id)
@@ -91,7 +91,7 @@ const getLearningContentById = async (req, res) => {
   }
 };
 
-const deleteLearningContent = async (req, res) => {
+export const deleteLearningContent = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await LearningContent.findByIdAndDelete(id);
@@ -106,7 +106,7 @@ const deleteLearningContent = async (req, res) => {
 };
 
 // Ask a question about learning content
-const askQuestion = async (req, res) => {
+export const askQuestion = async (req, res) => {
   try {
     const { pdfId, userId, question } = req.body;
 
@@ -129,12 +129,4 @@ const askQuestion = async (req, res) => {
     console.error("Ask Question Error:", err);
     res.status(500).json({ success: false, message: err.message });
   }
-};
-
-module.exports = {
-  generateLearningContent,
-  getAllLearningContents,
-  getLearningContentById,
-  deleteLearningContent,
-  askQuestion
 };

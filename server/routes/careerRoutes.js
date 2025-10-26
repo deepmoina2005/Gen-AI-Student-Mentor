@@ -1,13 +1,9 @@
-const express = require("express");
+import express from "express";
+import { getCareerOptions, getCareerScope } from "../controllers/careerController.js";
+
 const careerRouter = express.Router();
 
-const {
-  getCareerOptions,
-  getCareerScope,
-} = require("../controllers/careerController.js");
-
 careerRouter.get("/options", getCareerOptions);
-
 careerRouter.post("/scope", getCareerScope);
 
-module.exports = careerRouter;
+export default careerRouter;
