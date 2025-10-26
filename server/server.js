@@ -33,5 +33,4 @@ app.use("/api/career", careerRouter);
 app.use("/api/resource", resourceRouter);
 app.use("/api/solution", solutionRouter);
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+export default app;
