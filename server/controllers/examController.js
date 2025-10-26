@@ -1,6 +1,7 @@
 import PdfDocument from "../models/PdfDocument.js";
 import Exam from "../models/ExamModel.js";
 import { GroqLLM } from "../utils/groqLLM.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // ----------------- Helper: parse MCQs -----------------
 function parseMCQs(aiText) {
@@ -37,6 +38,18 @@ export const generateExam = async (req, res) => {
     if (!pdfDoc.text || pdfDoc.text.trim() === "")
       return res.status(400).json({ success: false, message: "PDF has no text content" });
 
+    // Upload PDF to Cloudinary if not already uploaded
+    if (!pdfDoc.cloudinaryUrl && pdfDoc.filePath) {
+      const uploadResult = await cloudinary.uploader.upload(pdfDoc.filePath, {
+        resource_type: "raw",
+        folder: "pdfs",
+        use_filename: true,
+        unique_filename: false,
+      });
+      pdfDoc.cloudinaryUrl = uploadResult.secure_url;
+      await pdfDoc.save();
+    }
+
     const llm = new GroqLLM();
     const prompt = `
       You are an AI teacher. Generate 10 multiple-choice questions from the following PDF content.
@@ -64,6 +77,7 @@ export const generateExam = async (req, res) => {
     const examRecord = await Exam.create({
       userId,
       pdfId,
+      pdfUrl: pdfDoc.cloudinaryUrl, // store Cloudinary link
       title,
       level: level || "Easy",
       mcqs,

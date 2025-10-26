@@ -10,12 +10,13 @@ import doubtrouter from "./routes/doubtRoutes.js";
 import careerRouter from "./routes/careerRoutes.js";
 import resourceRouter from "./routes/resourceRoute.js";
 import solutionRouter from "./routes/solutionReviewRoutes.js";
+import connectCloudinary from "./configs/cloudinary.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
-
+await connectCloudinary();
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))

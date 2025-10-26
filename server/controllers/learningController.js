@@ -1,7 +1,9 @@
 import LearningContent from "../models/LearningContentModel.js";
 import PdfDocument from "../models/PdfDocument.js";
 import { GroqLLM } from "../utils/groqLLM.js";
+import { v2 as cloudinary } from "cloudinary";
 
+// ----------------- Generate Learning Content -----------------
 export const generateLearningContent = async (req, res) => {
   try {
     const { pdfId, userId, topic } = req.body;
@@ -11,8 +13,21 @@ export const generateLearningContent = async (req, res) => {
     }
 
     const pdfDoc = await PdfDocument.findById(pdfId);
-    if (!pdfDoc)
+    if (!pdfDoc) {
       return res.status(404).json({ success: false, message: "PDF not found" });
+    }
+
+    // Upload PDF to Cloudinary if not already uploaded
+    if (!pdfDoc.cloudinaryUrl && pdfDoc.filePath) {
+      const uploadResult = await cloudinary.uploader.upload(pdfDoc.filePath, {
+        resource_type: "raw", // For PDF or other files
+        folder: "pdfs",
+        use_filename: true,
+        unique_filename: false,
+      });
+      pdfDoc.cloudinaryUrl = uploadResult.secure_url;
+      await pdfDoc.save();
+    }
 
     const prompt = `
       You are an AI tutor.
@@ -21,7 +36,7 @@ export const generateLearningContent = async (req, res) => {
       {
         "summary": "<concise summary>",
         "importantPoints": ["point1", "point2", ...],
-        "questions": [{"question": "<text>", "answer": "<text>"}, ...],
+        "questions": [{"question": "<text>", "answer": "<text>"}],
         "conclusion": "<text>",
         "resources": ["resource1", "resource2", ...]
       }
@@ -53,6 +68,7 @@ export const generateLearningContent = async (req, res) => {
       userId,
       topic,
       content,
+      pdfUrl: pdfDoc.cloudinaryUrl, // store Cloudinary link
     });
 
     res.json({ success: true, learningContent });
@@ -62,10 +78,11 @@ export const generateLearningContent = async (req, res) => {
   }
 };
 
+// ----------------- Get All Learning Contents -----------------
 export const getAllLearningContents = async (req, res) => {
   try {
     const contents = await LearningContent.find()
-      .populate("pdfId", "filename")
+      .populate("pdfId", "filename cloudinaryUrl")
       .populate("userId", "name email")
       .sort({ createdAt: -1 });
 
@@ -75,15 +92,17 @@ export const getAllLearningContents = async (req, res) => {
   }
 };
 
+// ----------------- Get Learning Content by ID -----------------
 export const getLearningContentById = async (req, res) => {
   try {
     const { id } = req.params;
     const content = await LearningContent.findById(id)
-      .populate("pdfId", "filename")
+      .populate("pdfId", "filename cloudinaryUrl")
       .populate("userId", "name email");
 
-    if (!content)
+    if (!content) {
       return res.status(404).json({ success: false, message: "Content not found" });
+    }
 
     res.json({ success: true, content });
   } catch (err) {
@@ -91,13 +110,21 @@ export const getLearningContentById = async (req, res) => {
   }
 };
 
+// ----------------- Delete Learning Content -----------------
 export const deleteLearningContent = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await LearningContent.findByIdAndDelete(id);
 
-    if (!deleted)
+    if (!deleted) {
       return res.status(404).json({ success: false, message: "Content not found" });
+    }
+
+    // Optional: Delete PDF from Cloudinary
+    if (deleted.pdfUrl) {
+      const publicId = deleted.pdfUrl.split("/").pop().split(".")[0]; // crude extraction
+      await cloudinary.uploader.destroy(`pdfs/${publicId}`, { resource_type: "raw" });
+    }
 
     res.json({ success: true, message: "Deleted successfully" });
   } catch (err) {
@@ -105,7 +132,7 @@ export const deleteLearningContent = async (req, res) => {
   }
 };
 
-// Ask a question about learning content
+// ----------------- Ask Question -----------------
 export const askQuestion = async (req, res) => {
   try {
     const { pdfId, userId, question } = req.body;
