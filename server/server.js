@@ -18,7 +18,7 @@ const app = express();
 const corsOptions = {
   origin: [
     "http://localhost:5173",
-    "https://gen-ai-student-mentor.vercel.app/"
+    "https://gen-ai-student-mentor.vercel.app"
   ],
   credentials: true,
 };
