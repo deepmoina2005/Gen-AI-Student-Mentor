@@ -10,7 +10,7 @@ import doubtrouter from "./routes/doubtRoutes.js";
 import careerRouter from "./routes/careerRoutes.js";
 import resourceRouter from "./routes/resourceRoute.js";
 import solutionRouter from "./routes/solutionReviewRoutes.js";
-import { connectCloudinary } from "./utils/cloudinary.js";
+import connectCloudinary  from "./utils/cloudinary.js";
 
 const app = express();
 
@@ -18,7 +18,6 @@ app.use(cors({ origin: "https://gen-ai-student-mentor.vercel.app"}));
 app.use(express.json());
 app.use(express.static("public"));
 
-async function startServer() {
   await connectCloudinary();
 
   mongoose.connect(process.env.MONGO_URI)
@@ -34,7 +33,4 @@ async function startServer() {
   app.use("/api/resource", resourceRouter);
   app.use("/api/solution", solutionRouter);
 
-  app.listen(process.env.PORT || 5000, () => console.log("Server running"));
-}
-
-startServer();
+  app.listen(process.env.PORT || 4000, () => console.log("Server running"));
