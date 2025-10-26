@@ -27,7 +27,6 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cors(corsOptions));
 
-
   await connectCloudinary();
 
   mongoose.connect(process.env.MONGO_URI)
