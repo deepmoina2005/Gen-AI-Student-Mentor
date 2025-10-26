@@ -14,7 +14,7 @@ import { connectCloudinary } from "./utils/cloudinary.js";
 
 const app = express();
 
-app.use(cors({ origin: "https://gen-ai-student-mentor.vercel.app" }));
+app.use(cors({ origin: "https://gen-ai-student-mentor.vercel.app"}));
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -22,10 +22,9 @@ async function startServer() {
   await connectCloudinary();
 
   mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("✅ MongoDB connected"))
-    .catch(err => console.error("❌ MongoDB connection error:", err));
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.error("MongoDB connection error:", err));
 
-  // Routes
   app.use("/api/upload", uploadRoutes);
   app.use("/api/exam", askRoutes);
   app.use("/api/auth", userRouter);
