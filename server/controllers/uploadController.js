@@ -2,9 +2,7 @@
 import fs from "fs";
 import { createRequire } from "module";
 import PdfDocument  from "../models/PdfDocument.js";
-
-const require = createRequire(import.meta.url);
-const { PDFParse } = require("pdf-parse"); // v2 style
+import pdf from "pdf-parse/lib/pdf-parse.js";
 
 export const uploadPDF = async (req, res) => {
   try {
@@ -12,7 +10,7 @@ export const uploadPDF = async (req, res) => {
 
     const buffer = fs.readFileSync(req.file.path);
 
-    const parser = new PDFParse({ data: buffer });
+    const parser = new pdf({ data: buffer });
     const pdfData = await parser.getText(); // extract text
     await parser.destroy(); // clean up
 
