@@ -45,7 +45,7 @@ const Footer = () => {
       </div>
 
       <p className="pt-4 text-center text-xs md:text-sm pb-5">
-        Copyright 2025 © <a href="/">Creona</a>. All Rights Reserved.
+        Copyright 2025 © <a href="/">Vidya.ai</a>. All Rights Reserved.
       </p>
     </footer>
   );

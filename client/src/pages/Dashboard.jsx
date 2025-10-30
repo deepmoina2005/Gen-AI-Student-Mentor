@@ -26,7 +26,7 @@ const Dashboard = () => {
   const iconMap = {
     "Exam Preparation": Edit2,
     "Learning Content": BookOpen,
-    Resources: Link,
+    "Resources": Link,
     "AI Career Counsellor": MessageCircleQuestion,
   };
 
@@ -49,7 +49,7 @@ const Dashboard = () => {
   const ModuleCard = ({ module }) => {
     const Icon = iconMap[module.name] || BookOpen;
     return (
-      <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+      <div onClick={()=> navigate(`${module.route}`)} className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
         <div className="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-lg mb-2">
           <Icon className="w-6 h-6 text-white" />
         </div>
